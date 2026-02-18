@@ -68,7 +68,7 @@ router.get('/sfw', paginate(24,100), async (req, res, next) => {
     const q = (req.query.q || '').trim();
     let where = 'WHERE nsfw=0';
     const params = [];
-    if (q) { where += ' AND (a.title LIKE ? OR a.description LIKE ? OR IFNULL(a.tags,'') LIKE ?)'; params.push(`%${q}%`,`%${q}%`,`%${q}%`); }
+    if (q) { where += ' AND (a.title LIKE ? OR a.description LIKE ? OR IFNULL(a.tags,\\\'\\\') LIKE ?)'; params.push(`%${q}%`,`%${q}%`,`%${q}%`); }
     const [rows] = await db.query(`SELECT a.*, ar.name AS artist_name FROM artworks a JOIN artists ar ON a.artist_id=ar.id ${where} ORDER BY a.created_at DESC LIMIT ? OFFSET ?`, [...params, limit, offset]);
     const [[cnt]] = await db.query(`SELECT COUNT(*) AS cnt FROM artworks a ${where}`, params);
     res.render('fanart/sfw', { title: 'SFW Art', arts: rows, total: cnt.cnt, page, limit, q });
@@ -81,7 +81,7 @@ router.get('/nsfw', paginate(24,100), async (req, res, next) => {
     const q = (req.query.q || '').trim();
     let where = 'WHERE nsfw=1';
     const params = [];
-    if (q) { where += ' AND (a.title LIKE ? OR a.description LIKE ? OR IFNULL(a.tags,'') LIKE ?)'; params.push(`%${q}%`,`%${q}%`,`%${q}%`); }
+    if (q) { where += ' AND (a.title LIKE ? OR a.description LIKE ? OR IFNULL(a.tags,\\\'\\\') LIKE ?)'; params.push(`%${q}%`,`%${q}%`,`%${q}%`); }
     const [rows] = await db.query(`SELECT a.*, ar.name AS artist_name FROM artworks a JOIN artists ar ON a.artist_id=ar.id ${where} ORDER BY a.created_at DESC LIMIT ? OFFSET ?`, [...params, limit, offset]);
     const [[cnt]] = await db.query(`SELECT COUNT(*) AS cnt FROM artworks a ${where}`, params);
     res.render('fanart/nsfw', { title: 'NSFW Art', arts: rows, total: cnt.cnt, page, limit, q });
