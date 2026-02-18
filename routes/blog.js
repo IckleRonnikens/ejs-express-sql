@@ -17,7 +17,7 @@ router.get('/', paginate(10,50), async (req, res, next) => {
     if (tag) { where += " AND CONCAT(',', IFNULL(tags,''), ',') LIKE ?"; params.push(`%,${tag},%`); }
     if (q) { where += " AND (title LIKE ? OR body LIKE ?)"; params.push(`%${q}%`, `%${q}%`); }
 
-    const sql = `SELECT id, slug, title, SUBSTRING(body,1,300) AS excerpt, tags, published_at FROM blog_posts ${where} ORDER BY published_at DESC LIMIT ? OFFSET ?`;
+    const sql = `SELECT id, slug, title, SUBSTRING(body,1,300) AS excerpt, image, summary, tags, published_at FROM blog_posts ${where} ORDER BY published_at DESC LIMIT ? OFFSET ?`;
     const [posts] = await db.query(sql, [...params, limit, offset]);
     const [[cnt]] = await db.query(`SELECT COUNT(*) AS cnt FROM blog_posts ${where}`, params);
 
