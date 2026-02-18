@@ -1,0 +1,32 @@
+
+<section>
+  <h1>Welcome</h1>
+  <p>Latest from around the site.</p>
+
+  <h2>Recent Blog Posts</h2>
+  <ul>
+    <% posts.forEach(p => { %>
+      <li>
+        <a href="/blog/<%= p.slug %>"><%= p.title %></a>
+        <small> — <%= p.published_at %></small>
+      </li>
+    <% }) %>
+  </ul>
+
+  <h2>Recent Artworks</h2>
+  <div class="grid">
+    <% arts.forEach(a => { %>
+      <figure>
+        <img src="<%= a.image_path %>" alt="<%= a.title %>" />
+        <figcaption><%= a.title %> — <em><%= a.artist_name %></em></figcaption>
+      </figure>
+    <% }) %>
+  </div>
+
+  <h2>Recent Stories</h2>
+  <ul>
+    <% stories.forEach(s => { %>
+      <li><strong><%= s.title %></strong> — <em><%= s.writer_name %></em> <small><%= s.published_at %></small></li>
+    <% }) %>
+  </ul>
+</section>

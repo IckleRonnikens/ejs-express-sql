@@ -1,0 +1,16 @@
+
+<section>
+  <h1>Artbook</h1>
+  <ul class="flipbook-list">
+  <% items.forEach(it => { 
+     const pages = it.pages_json ? JSON.parse(it.pages_json) : [];
+  %>
+    <li class="flipbook-item">
+      <h3><%= it.title %></h3>
+      <p><%= it.description || '' %></p>
+      <div class="flipbook" data-pages='<%= JSON.stringify(pages) %>'></div>
+    </li>
+  <% }) %>
+  </ul>
+  <script src="/public/js/flipbook.js"></script>
+</section>

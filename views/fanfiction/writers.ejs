@@ -1,0 +1,14 @@
+
+<section>
+  <h1>Writers</h1>
+  <form method="get">
+    <input name="q" placeholder="Search writers..." value="<%= q || '' %>" />
+    <button>Search</button>
+  </form>
+  <ul>
+    <% writers.forEach(w => { %>
+      <li><a href="/fanfiction/writers/<%= w.id %>"><%= w.name %></a></li>
+    <% }) %>
+  </ul>
+  <%- include('../partials/pagination', { total, page, limit, q }) %>
+</section>

@@ -1,0 +1,15 @@
+
+<section>
+  <h1>Magazine</h1>
+  <ul class="flipbook-list">
+    <% items.forEach(it => { %>
+      <li>
+        <h3><%= it.title %></h3>
+        <p><%= it.description || '' %></p>
+        <% if (it.pdf_path) { %>
+          <p><a href="<%= it.pdf_path %>" target="_blank" rel="noopener">Open PDF</a></p>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+</section>

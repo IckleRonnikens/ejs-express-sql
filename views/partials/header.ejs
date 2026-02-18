@@ -1,0 +1,15 @@
+
+<header class="site-header">
+  <nav>
+    <a href="/" class="nav-link<%= path==='/' ? ' active' : '' %>">Home</a>
+    <a href="/about" class="nav-link<%= path.startsWith('/about') ? ' active' : '' %>">About</a>
+    <a href="/blog" class="nav-link<%= path.startsWith('/blog') ? ' active' : '' %>">Blog</a>
+    <a href="/fanart" class="nav-link<%= path.startsWith('/fanart') ? ' active' : '' %>">Fanart</a>
+    <a href="/fanfiction" class="nav-link<%= path.startsWith('/fanfiction') ? ' active' : '' %>">Fanfiction</a>
+    <a href="/quotes" class="nav-link<%= path.startsWith('/quotes') ? ' active' : '' %>">Quotes</a>
+    <a href="/projects" class="nav-link<%= path.startsWith('/projects') ? ' active' : '' %>">Projects</a>
+    <a href="/feedback" class="nav-link<%= path.startsWith('/feedback') ? ' active' : '' %>">Feedback</a>
+    <a href="/credits" class="nav-link<%= path.startsWith('/credits') ? ' active' : '' %>">Credits</a>
+    <a href="/search" class="nav-link<%= path.startsWith('/search') ? ' active' : '' %>">Search</a>
+  </nav>
+</header>

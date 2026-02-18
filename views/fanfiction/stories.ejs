@@ -1,0 +1,19 @@
+
+<section>
+  <h1><%= title %></h1>
+  <form method="get">
+    <input name="q" placeholder="Search stories..." value="<%= q || '' %>" />
+    <input name="tag" placeholder="Tag (e.g., adventure)" value="<%= tag || '' %>" />
+    <button>Filter</button>
+  </form>
+  <ul>
+    <% stories.forEach(s => { %>
+      <li>
+        <strong><%= s.title %></strong> — <em><%= s.writer_name %></em>
+        <p><%= s.summary || '' %></p>
+        <small><%= s.published_at %> · <%= s.tags || '' %></small>
+      </li>
+    <% }) %>
+  </ul>
+  <%- include('../partials/pagination', { total, page, limit, q, tag }) %>
+</section>

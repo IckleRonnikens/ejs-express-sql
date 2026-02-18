@@ -1,0 +1,23 @@
+
+<%
+  const totalPages = Math.max(1, Math.ceil((total || 0) / (limit || 10)));
+  const cur = page || 1;
+  const baseParams = new URLSearchParams();
+  if (typeof q !== 'undefined' && q) baseParams.set('q', q);
+  if (typeof tag !== 'undefined' && tag) baseParams.set('tag', tag);
+  baseParams.set('limit', limit);
+  const makeUrl = (p) => {
+    const sp = new URLSearchParams(baseParams.toString());
+    sp.set('page', p);
+    return `?${sp.toString()}`;
+  };
+%>
+<nav class="pagination">
+  <% if (cur > 1) { %>
+    <a href="<%= makeUrl(cur - 1) %>">Prev</a>
+  <% } %>
+  <span>Page <%= cur %> / <%= totalPages %></span>
+  <% if (cur < totalPages) { %>
+    <a href="<%= makeUrl(cur + 1) %>">Next</a>
+  <% } %>
+</nav>

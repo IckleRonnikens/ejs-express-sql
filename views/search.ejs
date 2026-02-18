@@ -1,0 +1,29 @@
+
+<section>
+  <h1>Search</h1>
+  <form>
+    <input name="q" value="<%= q %>" placeholder="Search site-wide..."/>
+    <button>Search</button>
+  </form>
+
+  <p><%= total %> results</p>
+  <ul class="search-results">
+    <% results.forEach(r => { %>
+      <li>
+        <strong>[<%= r.type %>]</strong>
+        <% if (r.type === 'blog') { %>
+          <a href="/blog?q=<%= encodeURIComponent(r.title) %>"><%= r.title %></a>
+        <% } else if (r.type === 'story') { %>
+          <a href="/fanfiction/stories?q=<%= encodeURIComponent(r.title) %>"><%= r.title %></a>
+        <% } else if (r.type === 'quote') { %>
+          <span><%= r.title %></span>
+        <% } else { %>
+          <span><%= r.title %></span>
+        <% } %>
+        <div class="excerpt"><%- r.body %></div>
+        <small><%= r.tags || '' %></small>
+      </li>
+    <% }) %>
+  </ul>
+  <%- include('partials/pagination', { total, page, limit, q }) %>
+</section>

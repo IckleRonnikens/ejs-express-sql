@@ -1,0 +1,21 @@
+
+<article>
+  <h1><%= post.title %></h1>
+  <div class="body"><%- post.body %></div>
+  <p><small>Tags: <%= post.tags || '—' %></small></p>
+</article>
+
+<section>
+  <h2>Comments</h2>
+  <ul>
+    <% comments.forEach(c => { %>
+      <li><strong><%= c.author %></strong> <small><%= c.created_at %></small><br/><div><%= c.body %></div></li>
+    <% }) %>
+  </ul>
+
+  <form method="post" action="/blog/<%= post.id %>/comments">
+    <label>Name <input name="author" required maxlength="100"/></label>
+    <label>Comment <textarea name="body" required maxlength="2000"></textarea></label>
+    <button type="submit">Post</button>
+  </form>
+</section>

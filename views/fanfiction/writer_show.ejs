@@ -1,0 +1,16 @@
+
+<section>
+  <h1><%= writer.name %></h1>
+  <p><%= writer.bio || '' %></p>
+  <h2>Stories</h2>
+  <ul>
+    <% stories.forEach(s => { %>
+      <li>
+        <strong><%= s.title %></strong>
+        <p><%= s.summary || '' %></p>
+        <small><%= s.published_at %> · <%= s.tags || '' %></small>
+      </li>
+    <% }) %>
+  </ul>
+  <%- include('../partials/pagination', { total, page, limit }) %>
+</section>

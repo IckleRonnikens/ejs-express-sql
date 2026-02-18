@@ -1,0 +1,22 @@
+
+<section>
+  <h1>Blog</h1>
+
+  <form method="get" class="filters">
+    <input type="text" name="q" placeholder="Search posts..." value="<%= q || '' %>"/>
+    <input type="text" name="tag" placeholder="Tag (e.g., news)" value="<%= tag || '' %>"/>
+    <button type="submit">Filter</button>
+  </form>
+
+  <ul class="post-list">
+    <% posts.forEach(p => { %>
+      <li>
+        <h3><a href="/blog/<%= p.slug %>"><%= p.title %></a></h3>
+        <p><%= p.excerpt %>...</p>
+        <small><%= p.published_at %> · <%= (p.tags || '') %></small>
+      </li>
+    <% }) %>
+  </ul>
+
+  <%- include('../partials/pagination', { total, page, limit, q, tag }) %>
+</section>
