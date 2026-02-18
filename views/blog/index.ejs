@@ -12,8 +12,9 @@
     <% posts.forEach(p => { %>
       <li>
         <h3><a href="/blog/<%= p.slug %>"><%= p.title %></a></h3>
-        <p><%= p.excerpt %>...</p>
+        <p><%= p.summary %>...</p>
         <small><%= p.published_at %> · <%= (p.tags || '') %></small>
+        <img src="<%= p.image %>" />
       </li>
     <% }) %>
   </ul>
