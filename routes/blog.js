@@ -25,6 +25,7 @@ router.get('/', paginate(5,10), async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+
 router.get('/:slug', async (req, res, next) => {
   try {
     const [[post]] = await db.query(`SELECT * FROM blog_posts WHERE slug=?`, [req.params.slug]);
