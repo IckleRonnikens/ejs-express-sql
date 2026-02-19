@@ -7,7 +7,7 @@ const { commentRules } = require('../middleware/validation');
 const { validationResult } = require('express-validator');
 const sanitizeHtml = require('sanitize-html');
 
-router.get('/', paginate(10,50), async (req, res, next) => {
+router.get('/', paginate(5,10), async (req, res, next) => {
   try {
     const { page, limit, offset } = res.locals.pagination;
     const { tag, q } = req.query;
