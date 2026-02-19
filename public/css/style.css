@@ -132,6 +132,7 @@ nav ul li a:hover {color: #fff!important;}
     display:flex;
     align-items:center;
     }
+.blog ul li {list-style-type: none;}
 
 
 
