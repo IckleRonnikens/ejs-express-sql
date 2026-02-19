@@ -1,4 +1,3 @@
-
 -- MySQL schema for HP Fan Site (InnoDB + FULLTEXT)
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
