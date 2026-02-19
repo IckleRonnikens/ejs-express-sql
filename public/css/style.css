@@ -125,12 +125,5 @@ nav ul li a:hover {color: #fff!important;}
     align-items:center;
     }
 
-.blog {
-    height: 100vh;
-    width: auto;
-    padding: 20px;
-    display:flex;
-    align-items:center;
-    }
-.blog ul li {list-style-type: none;}
+.blog-post ul li {list-style-type: none;}
 
