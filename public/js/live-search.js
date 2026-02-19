@@ -47,12 +47,10 @@ function linkFor(r) {
     case 'artist':
       return `/fanart/artists?q=${encodeURIComponent(r.title || '')}`;
 
-    case 'quote': {
-      // r.extra holds the book name; map to short code
-      const code = BOOK_CODE[r.extra] || 'ps';
-      // Deep-link to the quote anchor on that child page
-      return `/quotes/${encodeURIComponent(code)}#q-${encodeURIComponent(r.id)}`;
-    }
+
+case 'quote':
+  return `/quotes/${encodeURIComponent(r.id)}`;
+
 
     case 'writer': 
       // You can deep-link to the writer page if you prefer:

@@ -42,12 +42,16 @@ app.use('/blog', require('./routes/blog'));
 app.use('/fanart', require('./routes/fanart'));
 app.use('/fanfiction', require('./routes/fanfiction'));
 app.use('/projects', require('./routes/projects'));
-app.use('/quotes', require('./routes/quotes'));
-
 app.use('/feedback', require('./routes/feedback'));
 app.use('/credits', require('./routes/credits'));
 app.use('/live-search', require('./routes/live-search'));
 app.use('/api', require('./routes/api.live-search'));
+
+const quotesLanding = require('./routes/quotes/index');
+const quotesView = require('./routes/quotes/view');
+
+app.use('/quotes', quotesLanding);
+app.use('/quotes', quotesView); // handles /quotes/:code
 
 const fanfictionLists = require('./routes/fanfiction/publicLists');
 app.use('/fanfiction/public-lists', fanfictionLists);

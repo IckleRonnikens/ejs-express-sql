@@ -1,11 +1,12 @@
 <section class="container">
   <nav class="breadcrumbs">
-    /quotesQuotes</a> <span class="sep">›</span>
+    <a href="/quotes">Quotes</a> <span class="sep">›</span>
     <span class="active"><%= bookTitle %></span>
   </nav>
 
   <h1><%= bookTitle %></h1>
 
+  <!-- Filters -->
   <form method="get" class="filters">
     <input name="q" value="<%= q || '' %>" placeholder="Search within this book…" />
     <input name="year" value="<%= year || '' %>" placeholder="Year (optional)" />
@@ -17,7 +18,7 @@
       <option value="year_asc"  <%= (sort==='year_asc')?'selected':'' %>>Year (asc)</option>
     </select>
     <button>Apply</button>
-    /quotes/<%= code %>Reset</a>
+    <a href="/quotes/<%= code %>" class="btn-link">Reset</a>
   </form>
 
   <p class="muted"><%= total %> result<%= total===1?'':'s' %>. Page <%= page %>.</p>
@@ -35,6 +36,7 @@
     <% }) %>
   </ul>
 
+  <!-- Pagination -->
   <nav class="pagination">
     <% const prev = page > 1 ? page-1 : null; %>
     <% const next = (page*limit) < total ? page+1 : null; %>
@@ -44,9 +46,9 @@
          return `?${u.toString()}`;
        } %>
 
-    <%= prev ? link({page:prev}) : " aria-disabled=\"true\">Prev</a>
+    <a class="btn" href="<%= prev ? link({page:prev}) : '#' %>" aria-disabled="<%= !prev %>">Prev</a>
     <span>Page <%= page %></span>
-    <%= next ? link({page:next}) : " aria-disabled=\"true\">Next</a>
+    <a class="btn" href="<%= next ? link({page:next}) : '#' %>" aria-disabled="<%= !next %>">Next</a>
 
     <span class="pad-left">
       <label>Per page</label>
@@ -68,4 +70,8 @@
   blockquote.text { margin:0 0 .35rem 0 }
   .meta { color:#6b7280; font-size:.95rem }
   .pad-left { margin-left:.75rem }
+  .btn { padding:.35rem .65rem; border:1px solid #d1d5db; border-radius:.375rem; text-decoration:none; background:#f9fafb; color:#111827; }
+  .btn[aria-disabled="true"] { opacity:.5; pointer-events:none; }
+  .btn-link { border:none; background:transparent; color:#2563eb; text-decoration:underline; padding:0; }
 </style>
+``

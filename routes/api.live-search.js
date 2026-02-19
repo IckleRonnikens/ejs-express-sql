@@ -108,26 +108,33 @@ router.get('/live-search', async (req, res, next) => {
       if (boolQ) params.push(boolQ);
     }
 
-    // QUOTES
-    {
-  const fts = boolQ ? `MATCH(quote_text) AGAINST (? IN BOOLEAN MODE)` : '1=1';
-  if (boolQ) params.push(boolQ);
 
+// QUOTES (new table schema)
+{
+  const fts = boolQ ? `MATCH(q.quote_text) AGAINST (? IN BOOLEAN MODE)` : '1=1';
+  const whereFilters = [];
+  const whereParams = [];
+
+  if (req.query.book) { whereFilters.push('q.book = ?'); whereParams.push(String(req.query.book)); }
+  if (req.query.year) { whereFilters.push('q.year = ?'); whereParams.push(parseInt(req.query.year, 10)); }
+
+  if (boolQ) params.push(boolQ);
   subqueries.push(`
-    SELECT q.id,
-           'quote' AS type,
-           q.book AS extra,                 -- keep book title
+    SELECT q.id, 'quote' AS type, NULL AS slug,
+           CONCAT(q.book, IFNULL(CONCAT(' (', q.year, ')'), '')) AS title,
            LEFT(q.quote_text, 160) AS snippet,
            q.created_at AS published_at,
            ${boolQ ? `MATCH(q.quote_text) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
     FROM quotes q
     WHERE ${fts}
+      ${whereFilters.length ? 'AND ' + whereFilters.join(' AND ') : ''}
     ORDER BY score DESC, published_at DESC
     LIMIT ${limit}
   `);
-
   if (boolQ) params.push(boolQ);
+  params.push(...whereParams);
 }
+
 
 
     // PROJECTS
@@ -203,19 +210,21 @@ const unionSql = `
       `); likeParams.push(like, like, like, like);
 
 
+
 likeSubs.push(`
-  SELECT q.id,
-         'quote' AS type,
-         q.book AS extra,
-         LEFT(q.quote_text, 160) AS snippet,
-         q.created_at AS published_at,
-         0 AS score
+  SELECT q.id, 'quote', NULL,
+         CONCAT(q.book, IFNULL(CONCAT(' (', q.year, ')'), '')),
+         LEFT(q.quote_text, 160), q.created_at, 0
   FROM quotes q
-  WHERE q.quote_text LIKE ?
-  ORDER BY published_at DESC
+  WHERE (q.quote_text LIKE ? OR q.book LIKE ?)
+    ${req.query.book ? 'AND q.book = ?' : ''}
+    ${req.query.year ? 'AND q.year = ?' : ''}
   LIMIT ${limit}
 `);
-likeParams.push(`%${q}%`);
+likeParams.push(like, like);
+if (req.query.book) likeParams.push(String(req.query.book));
+if (req.query.year) likeParams.push(parseInt(req.query.year, 10));
+
 
 
       likeSubs.push(`

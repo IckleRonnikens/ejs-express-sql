@@ -1,84 +1,47 @@
-<section class="quotes" id="quotes">
-  <div class="d-flex h-100 align-items-center">
-            <div class="container">
-  
-            <header class="text-center">
-              <h2 class="text-uppercase lined">Quotes</h2>
-            </header>
-          <div class="row">
-          <div class="col-lg-2">
-          </div>
-  
-            <div class="col-lg-8">
-              <p class="text-center">Handcrafted by Users @Crazy and @Indo_Carib over at the HMS Harmony discord.</p>
-            </div>
-  
-            <div class="col-lg-2">
-            </div>
-          
-          </div>
-  
-          <div class="row">
-            <div class="col-lg-3 mt-4">
-              <a href="/ps"><img class="w-100 image rounded " src="/public/images/quotes/ps.jpg" alt="PS"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              <a href="#cod"><img class="w-100 image rounded " src="/public/images/quotes/cos.jpg" alt="CoS"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              <a href="#poa"><img class="w-100 image rounded " src="/public/images/quotes/poa.jpg" alt="PoA"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              <a href="#gof"><img class="w-100 image rounded " src="/public/images/quotes/gof.jpg" alt="GoF"></a>
-            </div>
-          </div>
+<section class="quotes mt-5 text-white pb-5">
+    <div class="container">
+  <h1>Harry and Hermione Quotes</h1><hr />
+<p>This H/Hr quote collection was compiled by Users @Crazy and @Indo_Carib over at the HMS Harmony discord. You can find the cord here: https://discord.gg/2GcXw8R</p>
 
+<p>Not all of the quotes here will be explicitly romantic quotes; they are quotes that contribute to our understanding of Harry and Hermione as people, their interactions with each other, and their relationship which shone in all the moments, big or small. Every bizarre situation they found themselves in, whether in a straightforward or subtle way. Canon is full to the brim with moments that showcase Harry and Hermione’s relationship, strong friendship, and foundation of trust, love, and understanding that belongs only to them.</p>
 
-          <div class="row">
-            <div class="col-lg-3 mt-4">
-              <a href="#ootp"><img class="w-100 image rounded " src="/public/images/quotes/ootp.jpg" alt="OoTP"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              <a href="#hbp"><img class="w-100 image rounded " src="/public/images/quotes/hbp.jpg" alt="HBP"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              <a href="#dh"><img class="w-100 image rounded " src="/public/images/quotes/dh.jpg" alt="DH"></a>
-            </div>
-            <div class="col-lg-3 mt-4">
-              
-            </div>
-          </div>
+<p>These quotes are the wood and nails that built the ship Harry and Hermione. </p><br>
 
-  
-  
-            </div>
-          </div>
-        </section>
+<p class="muted">Choose a book:</p><hr />
 
-
-
-
-
-
-
-<section class="container">
-  <h1>Quotes</h1>
-  <p class="muted">Choose a book:</p>
-
-  <ul class="grid books">
-    <% Object.entries(books).forEach(([code, title]) => { 
-         const cnt = counts[title] || 0; %>
-      <li class="book">
-        /quotes/<%= code %><%= title %></a>
-        <div class="muted small"><%= cnt.toLocaleString() %> quote<%= cnt===1?'':'s' %></div>
-      </li>
-    <% }) %>
-  </ul>
+  </div>
 </section>
 
-<style>
-  .grid.books { list-style:none; display:grid; gap:.75rem; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); padding:0; }
-  .book { border:1px solid #e5e7eb; border-radius:.5rem; padding:.75rem; background:white; }
-  .small { font-size:.9rem }
-  .muted { color:#6b7280 }
-</style>
+<section class="quotes mt-5 text-white pb-5">
+  <div class="container">
+      <div class="row grid books">
+    <% items.forEach(item => { %>
+        <div class="col-md-6 py-5 ">
+          <img src="/public/images/quotes/<%= item.code %>.jpg" class="img-fluid w-100" />
+        </div>
+        <div class="col-md-6 py-5">
+          <h2><a href="/quotes/<%= item.code %>"><%= item.title %></a></h2><hr />
+          <p>
+            <div class="muted small"><%= item.count.toLocaleString() %> quote<%= item.count===1?'':'s' %></div>
+          </p>
+
+          <p>
+            <u>The original objective</u>: To create a website which replaces the void Portkey.org
+            left behind as a website for fanfiction and forum for discussion based solely on the Harry/Hermione pairing.
+          </p>
+
+          <p>
+            <a href="/fanfiction">Fanfiction</a>: Was to be a place where authors could post their HHR stories.
+            The stories would be sorted by readers using a search function similar to what porkey and the archive have
+            (by genres, pairings, rating, and length, options such as including "favorites" are also a possibility).
+          </p>
+
+            <a class="btn btn-primary rounded-0" href="/quotes/<%= item.code %>">View Quotes</a>
+        </div>
+    <% }) %>
+      </div>
+      
+
+       
+</div>
+</section>
