@@ -1,0 +1,39 @@
+<section class="container">
+  <h1>Quotes</h1>
+
+  <form method="get" class="filters">
+    <input name="q" value="<%= q || '' %>" placeholder="Search quotes..." />
+    <input name="book" value="<%= book || '' %>" placeholder="Book (exact)" />
+    <input name="year" value="<%= year || '' %>" placeholder="Year (1997)" />
+    <button>Search</button>
+    <% if (q || book || year) { %>
+      <a href="/quotes">Clear</a>
+    <% } %>
+  </form>
+
+  <p><%= total %> result<%= total===1?'':'s' %></p>
+
+  <ul class="quote-list">
+    <% results.forEach(r => { %>
+      <li class="quote">
+        <div class="meta">
+          <strong><%= r.book %></strong>
+          <% if (r.year) { %> · <span><%= r.year %></span><% } %>
+          · <small>#<%= r.id %></small>
+        </div>
+        <blockquote class="text"><%- r.quote_html %></blockquote>
+        <% if (r.source_note) { %>
+          <div class="note"><small><%= r.source_note %></small></div>
+        <% } %>
+        <div class="links">
+          /quotes/<%= r.id %>View</a>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+
+  <%- include('../partials/pagination', { 
+        total, page, limit, 
+        q, book, year 
+      }) %>
+</section>

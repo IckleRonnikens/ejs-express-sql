@@ -40,8 +40,6 @@ function linkFor(r) {
       return r.slug ? `/blog/${encodeURIComponent(r.slug)}` : `/blog`;
     case 'story':
       return `/fanfiction/stories?q=${encodeURIComponent(r.title || '')}`;
-    case 'quote':
-      return `/quotes/${encodeURIComponent((r.title || '').split(' - ')[0] || '')}?q=${encodeURIComponent(r.title || '')}`;
     case 'art':
       return `/fanart/sfw?q=${encodeURIComponent(r.title || '')}`;
     case 'project':
