@@ -108,6 +108,28 @@ router.get('/live-search', async (req, res, next) => {
       if (boolQ) params.push(boolQ);
     }
 
+    // QUOTES
+    {
+  const fts = boolQ ? `MATCH(quote_text) AGAINST (? IN BOOLEAN MODE)` : '1=1';
+  if (boolQ) params.push(boolQ);
+
+  subqueries.push(`
+    SELECT q.id,
+           'quote' AS type,
+           q.book AS extra,                 -- keep book title
+           LEFT(q.quote_text, 160) AS snippet,
+           q.created_at AS published_at,
+           ${boolQ ? `MATCH(q.quote_text) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
+    FROM quotes q
+    WHERE ${fts}
+    ORDER BY score DESC, published_at DESC
+    LIMIT ${limit}
+  `);
+
+  if (boolQ) params.push(boolQ);
+}
+
+
     // PROJECTS
     {
       const fts = boolQ ? `MATCH(p.title, p.description) AGAINST (? IN BOOLEAN MODE)` : '1=1';
@@ -180,19 +202,21 @@ const unionSql = `
         LIMIT ${limit}
       `); likeParams.push(like, like, like, like);
 
+
 likeSubs.push(`
-  SELECT q.id, 'quote', NULL,
-         CONCAT(q.book, IFNULL(CONCAT(' (', q.year, ')'), '')),
-         LEFT(q.quote_text, 160), q.created_at, 0
+  SELECT q.id,
+         'quote' AS type,
+         q.book AS extra,
+         LEFT(q.quote_text, 160) AS snippet,
+         q.created_at AS published_at,
+         0 AS score
   FROM quotes q
-  WHERE (q.quote_text LIKE ? OR q.book LIKE ?)
-    ${req.query.book ? 'AND q.book = ?' : ''}
-    ${req.query.year ? 'AND q.year = ?' : ''}
+  WHERE q.quote_text LIKE ?
+  ORDER BY published_at DESC
   LIMIT ${limit}
 `);
-likeParams.push(like, like);
-if (req.query.book) likeParams.push(String(req.query.book));
-if (req.query.year) likeParams.push(parseInt(req.query.year, 10));
+likeParams.push(`%${q}%`);
+
 
       likeSubs.push(`
         SELECT ar.id, 'artist', NULL, ar.name,

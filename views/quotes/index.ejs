@@ -63,40 +63,22 @@
 
 <section class="container">
   <h1>Quotes</h1>
+  <p class="muted">Choose a book:</p>
 
-  <form method="get" class="filters">
-    <input name="q" value="<%= q || '' %>" placeholder="Search quotes..." />
-    <input name="book" value="<%= book || '' %>" placeholder="Book (exact)" />
-    <input name="year" value="<%= year || '' %>" placeholder="Year (1997)" />
-    <button>Search</button>
-    <% if (q || book || year) { %>
-      <a href="/quotes">Clear</a>
-    <% } %>
-  </form>
-
-  <p><%= total %> result<%= total===1?'':'s' %></p>
-
-  <ul class="quote-list">
-    <% results.forEach(r => { %>
-      <li class="quote">
-        <div class="meta">
-          <strong><%= r.book %></strong>
-          <% if (r.year) { %> · <span><%= r.year %></span><% } %>
-          · <small>#<%= r.id %></small>
-        </div>
-        <blockquote class="text"><%- r.quote_html %></blockquote>
-        <% if (r.source_note) { %>
-          <div class="note"><small><%= r.source_note %></small></div>
-        <% } %>
-        <div class="links">
-          /quotes/<%= r.id %>View</a>
-        </div>
+  <ul class="grid books">
+    <% Object.entries(books).forEach(([code, title]) => { 
+         const cnt = counts[title] || 0; %>
+      <li class="book">
+        /quotes/<%= code %><%= title %></a>
+        <div class="muted small"><%= cnt.toLocaleString() %> quote<%= cnt===1?'':'s' %></div>
       </li>
     <% }) %>
   </ul>
-
-  <%- include('../partials/pagination', { 
-        total, page, limit, 
-        q, book, year 
-      }) %>
 </section>
+
+<style>
+  .grid.books { list-style:none; display:grid; gap:.75rem; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); padding:0; }
+  .book { border:1px solid #e5e7eb; border-radius:.5rem; padding:.75rem; background:white; }
+  .small { font-size:.9rem }
+  .muted { color:#6b7280 }
+</style>

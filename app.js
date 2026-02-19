@@ -41,8 +41,9 @@ app.use('/about', require('./routes/about'));
 app.use('/blog', require('./routes/blog'));
 app.use('/fanart', require('./routes/fanart'));
 app.use('/fanfiction', require('./routes/fanfiction'));
-app.use('/quotes', require('./routes/quotes'));
 app.use('/projects', require('./routes/projects'));
+app.use('/quotes', require('./routes/quotes'));
+
 app.use('/feedback', require('./routes/feedback'));
 app.use('/credits', require('./routes/credits'));
 app.use('/live-search', require('./routes/live-search'));

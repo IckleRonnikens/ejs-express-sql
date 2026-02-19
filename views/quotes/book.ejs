@@ -1,0 +1,71 @@
+<section class="container">
+  <nav class="breadcrumbs">
+    /quotesQuotes</a> <span class="sep">›</span>
+    <span class="active"><%= bookTitle %></span>
+  </nav>
+
+  <h1><%= bookTitle %></h1>
+
+  <form method="get" class="filters">
+    <input name="q" value="<%= q || '' %>" placeholder="Search within this book…" />
+    <input name="year" value="<%= year || '' %>" placeholder="Year (optional)" />
+    <select name="sort">
+      <option value="relevance" <%= (sort==='relevance')?'selected':'' %>>Relevance</option>
+      <option value="newest"    <%= (sort==='newest')?'selected':'' %>>Newest</option>
+      <option value="oldest"    <%= (sort==='oldest')?'selected':'' %>>Oldest</option>
+      <option value="year_desc" <%= (sort==='year_desc')?'selected':'' %>>Year (desc)</option>
+      <option value="year_asc"  <%= (sort==='year_asc')?'selected':'' %>>Year (asc)</option>
+    </select>
+    <button>Apply</button>
+    /quotes/<%= code %>Reset</a>
+  </form>
+
+  <p class="muted"><%= total %> result<%= total===1?'':'s' %>. Page <%= page %>.</p>
+
+  <ul class="quote-list">
+    <% results.forEach(r => { %>
+      <li id="q-<%= r.id %>" class="quote">
+        <blockquote class="text"><%- r.quote_html %></blockquote>
+        <div class="meta">
+          <% if (r.year) { %><span>Year: <%= r.year %></span><% } %>
+          <% if (r.source_note) { %> · <span class="note"><%= r.source_note %></span><% } %>
+          · <a href="#q-<%= r.id %>">Permalink</a>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+
+  <nav class="pagination">
+    <% const prev = page > 1 ? page-1 : null; %>
+    <% const next = (page*limit) < total ? page+1 : null; %>
+    <% function link(changes){ 
+         const u = new URLSearchParams({ q:q||'', year:year||'', sort:sort||'', page, limit });
+         Object.entries(changes||{}).forEach(([k,v]) => u.set(k, String(v)));
+         return `?${u.toString()}`;
+       } %>
+
+    <%= prev ? link({page:prev}) : " aria-disabled=\"true\">Prev</a>
+    <span>Page <%= page %></span>
+    <%= next ? link({page:next}) : " aria-disabled=\"true\">Next</a>
+
+    <span class="pad-left">
+      <label>Per page</label>
+      <select onchange="location.search='<%= link({}) %>'.replace(/([?&])limit=[^&]*/, '').concat('&limit='+this.value,'&page=1')">
+        <option value="20"  <%= limit==20?'selected':'' %>>20</option>
+        <option value="50"  <%= limit==50?'selected':'' %>>50</option>
+        <option value="100" <%= limit==100?'selected':'' %>>100</option>
+      </select>
+    </span>
+  </nav>
+</section>
+
+<style>
+  .breadcrumbs { margin-bottom:.5rem; font-size:.95rem }
+  .breadcrumbs .sep { color:#9ca3af; margin:0 .35rem }
+  .breadcrumbs .active { font-weight:600 }
+  .quote-list { list-style:none; padding:0; display:grid; gap:1rem }
+  .quote { border:1px solid #e5e7eb; border-radius:.5rem; padding:.75rem; background:white }
+  blockquote.text { margin:0 0 .35rem 0 }
+  .meta { color:#6b7280; font-size:.95rem }
+  .pad-left { margin-left:.75rem }
+</style>
