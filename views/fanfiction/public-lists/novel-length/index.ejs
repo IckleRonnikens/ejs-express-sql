@@ -1,0 +1,142 @@
+<!-- views/fanfiction/public-lists/novel-length/index.ejs -->
+<section class="container">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumbs">
+    <% (crumbs || []).forEach((c, i) => { %>
+      <% if (c.active) { %>
+        <span class="crumb active"><%= c.label %></span>
+      <% } else { %>
+        <a class="crumb" href="<%= c.href %>"><%= c.label %></a>
+        <% if (i < crumbs.length - 1) { %><span class="sep">›</span><% } %>
+      <% } %>
+    <% }) %>
+  </nav>
+
+  <h1>Novel-Length</h1>
+
+  <!-- Filters -->
+  <form method="get" class="filters">
+    <div class="filter-grid">
+      <div class="f">
+        <label>Keyword</label>
+        <input name="q" value="<%= q || '' %>" placeholder="Find in characters/comments…" />
+      </div>
+
+      <div class="f">
+        <label>Characters contains</label>
+        <input name="chars" value="<%= chars || '' %>" placeholder="e.g. Hermione G." />
+      </div>
+
+      <div class="f">
+        <label>Words (min–max)</label>
+        <div class="inline">
+          <input type="number" name="minWords" value="<%= minWords || '' %>" min="0" />
+          <span>—</span>
+          <input type="number" name="maxWords" value="<%= maxWords || '' %>" min="0" />
+        </div>
+      </div>
+
+      <div class="f">
+        <label>Chapters (min–max)</label>
+        <div class="inline">
+          <input type="number" name="minChapters" value="<%= minChapters || '' %>" min="0" />
+          <span>—</span>
+          <input type="number" name="maxChapters" value="<%= maxChapters || '' %>" min="0" />
+        </div>
+      </div>
+
+      <div class="f">
+        <label>Sort</label>
+        <select name="sort">
+          <option value="created_desc"  <%= sort==='created_desc' ? 'selected' : '' %>>Newest added</option>
+          <option value="words_desc"    <%= sort==='words_desc' ? 'selected' : '' %>>Words (high → low)</option>
+          <option value="words_asc"     <%= sort==='words_asc' ? 'selected' : '' %>>Words (low → high)</option>
+          <option value="chapters_desc" <%= sort==='chapters_desc' ? 'selected' : '' %>>Chapters (high → low)</option>
+          <option value="chapters_asc"  <%= sort==='chapters_asc' ? 'selected' : '' %>>Chapters (low → high)</option>
+        </select>
+      </div>
+
+      <div class="f actions">
+        <label>&nbsp;</label>
+        <button type="submit" class="btn">Apply</button>
+        <a class="btn btn-link" href="/fanfiction/public-lists/novel-length">Reset</a>
+      </div>
+    </div>
+  </form>
+
+  <p class="muted"><%= total %> result<%= total===1 ? '' : 's' %>. Page <%= page %>.</p>
+
+  <!-- Results -->
+  <ul class="cards">
+    <% results.forEach(r => { %>
+      <li class="card">
+        <div class="row space-between">
+          <div class="url">
+            <a href="<%= r.url %>" target="_blank" rel="noopener"><%= r.url %></a>
+          </div>
+          <div class="small muted"><%= new Date(r.created_at).toLocaleString() %></div>
+        </div>
+        <div class="row">
+          <div><strong>Characters:</strong> <%= r.characters || '—' %></div>
+        </div>
+        <div class="row">
+          <div><strong>Chapters:</strong> <%= r.chapters ?? '—' %></div>
+          <div><strong>Words:</strong> <%= (r.words ?? '—').toLocaleString() %></div>
+        </div>
+        <% if (r.comments) { %>
+          <div class="comments"><em><%= r.comments %></em></div>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+
+  <!-- Pagination -->
+  <nav class="pagination">
+    <% const prev = page > 1 ? page - 1 : null; %>
+    <% const next = (page * limit) < total ? page + 1 : null; %>
+
+    <% function linkWith(changes){ 
+         const u = new URLSearchParams({
+           q: q||'', chars: chars||'',
+           minWords: minWords||'', maxWords: maxWords||'',
+           minChapters: minChapters||'', maxChapters: maxChapters||'',
+           sort: sort||'', page: page, limit: limit
+         });
+         Object.entries(changes || {}).forEach(([k, v]) => u.set(k, v));
+         return `?${u.toString()}`;
+       } %>
+
+    <a class="btn" href="<%= prev ? linkWith({page: prev}) : '#' %>" aria-disabled="<%= !prev %>">Prev</a>
+    <span>Page <%= page %></span>
+    <a class="btn" href="<%= next ? linkWith({page: next}) : '#' %>" aria-disabled="<%= !next %>">Next</a>
+
+    <span class="pad-left">
+      <label>Per page</label>
+      <select onchange="location.search='<%= linkWith({}) %>'.replace(/([?&])limit=[^&]*/, '').concat('&limit='+this.value, '&page=1')">
+        <option value="20"  <%= (limit==20)  ? 'selected' : '' %>>20</option>
+        <option value="50"  <%= (limit==50)  ? 'selected' : '' %>>50</option>
+        <option value="100" <%= (limit==100) ? 'selected' : '' %>>100</option>
+      </select>
+    </span>
+  </nav>
+</section>
+
+<style>
+  .breadcrumbs { margin-bottom: .75rem; font-size: .95rem; }
+  .crumb { color: var(--link, #2563eb); text-decoration: none; }
+  .crumb.active { color: var(--text, #111827); font-weight: 600; }
+  .sep { margin: 0 .35rem; color: #9ca3af; }
+  .filters .filter-grid { display: grid; grid-template-columns: repeat(3, minmax(260px,1fr)); gap: .75rem; }
+  .filters .f label { display:block; font-size:.85rem; color:#6b7280; margin-bottom:.25rem; }
+  .filters .f .inline { display:flex; gap:.35rem; align-items:center; }
+  .filters .actions { display:flex; align-items:flex-end; gap:.5rem; }
+  .cards { list-style:none; padding:0; margin: .5rem 0 1.25rem 0; display:grid; gap:.75rem; }
+  .card { border:1px solid #e5e7eb; border-radius:.5rem; padding:.75rem; background:white; }
+  .row { display:flex; gap:1rem; flex-wrap: wrap; }
+  .space-between { justify-content: space-between; }
+  .muted { color:#6b7280; }
+  .pad-left { margin-left: .75rem; }
+  .btn { padding:.35rem .65rem; border:1px solid #d1d5db; border-radius:.375rem; text-decoration:none; background:#f9fafb; color:#111827; }
+  .btn[aria-disabled="true"] { opacity:.5; pointer-events:none; }
+  .btn-link { border: none; background: transparent; color: #2563eb; text-decoration: underline; padding: 0; }
+</style>

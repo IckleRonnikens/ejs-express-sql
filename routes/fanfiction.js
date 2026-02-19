@@ -58,7 +58,7 @@ router.get('/archives', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-router.get('/public-list', paginate(20,100), async (req, res, next) => {
+router.get('/public-lists', paginate(20,100), async (req, res, next) => {
   try {
     const { page, limit, offset } = res.locals.pagination;
     const [rows] = await db.query(`SELECT s.id, s.title, w.name as writer_name, s.summary, s.published_at

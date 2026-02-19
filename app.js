@@ -48,6 +48,11 @@ app.use('/credits', require('./routes/credits'));
 app.use('/live-search', require('./routes/live-search'));
 app.use('/api', require('./routes/api.live-search'));
 
+const fanfictionLists = require('./routes/fanfiction/publicLists');
+app.use('/fanfiction/public-lists', fanfictionLists);
+
+
+
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send('Internal Server Error');

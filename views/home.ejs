@@ -163,39 +163,40 @@
 
 
 <!-- START HOME-FOOTER SECTION -->
-<section>
-<div class="row">
-  <div class="col-md-4">
-      <h2>Recent Blog Posts</h2>
-  <ul>
-    <% posts.forEach(p => { %>
-      <li>
-        <a href="/blog/<%= p.slug %>"><%= p.title %></a>
-        <small> — <%= p.published_at %></small>
-      </li>
-    <% }) %>
-  </ul>
-  </div>
-  <div class="col-md-4">
-      <h2>Recent Artworks</h2>
-  <div class="grid">
-    <% arts.forEach(a => { %>
-      <figure>
-        <img src="<%= a.image_path %>" alt="<%= a.title %>" />
-        <figcaption><%= a.title %> — <em><%= a.artist_name %></em></figcaption>
-      </figure>
-    <% }) %>
-  </div>
-  </div>
-  <div class="col-md-4">
-     <h2>Recent Stories</h2>
-  <ul>
-    <% stories.forEach(s => { %>
-      <li><strong><%= s.title %></strong> — <em><%= s.writer_name %></em> <small><%= s.published_at %></small></li>
-    <% }) %>
-  </ul>
-  </div>
-</div>
+<section class="recent bg-black py-5">
+  <div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Recent Posts</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="feature col">
+        <h3 class="fs-2 text-body-emphasis text-white">Recent Blog</h3>
+          <% posts.forEach(p => { %>  
+            <h5><a href="/blog/<%= p.slug %>"><%= p.title %></a></h5><br>
+            <small> — <%= p.published_at %></small>
+            <p><%= p.summary %></p>
+          <a href="/blog/<%= p.slug %>" class="btn btn-primary rounded-0">Read More</a>
+          <% }) %>
+      </div>
 
+      <div class="feature col">
+        <h3 class="fs-2 text-body-emphasis text-white">Recent Artwork</h3>
+          <% arts.forEach(a => { %>  
+            <h5><a href="/artowkr/<%= a.slug %>"><%= a.title %></a></h5><br>
+            <small> — <%= a.artist_name %></small>
+            <p><%= a.summary %></p>
+          <a href="/artwork/<%= a.slug %>" class="btn btn-primary rounded-0">Read More</a>
+          <% }) %>
+      </div>
+
+      <div class="feature col">
+        <h3 class="fs-2 text-body-emphasis text-white">Recent Stories</h3>
+          <% stories.forEach(s => { %>  
+            <h5><a href="/artwork/<%= s.slug %>"><%= s.title %></a></h5><br>
+            <small> — <%= s.published_at %></small>
+            <p><%= s.writer_name %></p>
+          <a href="/stories/<%= s.slug %>" class="btn btn-primary rounded-0">Read More</a>
+          <% }) %>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- END HOME-FOOTER SECTION -->

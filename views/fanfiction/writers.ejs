@@ -1,14 +1,49 @@
+<section class="writers mt-5 text-white pb-5">
+  <div class="container">
+  <h1>Writers</h1><hr />
 
-<section>
-  <h1>Writers</h1>
-  <form method="get">
-    <input name="q" placeholder="Search writers..." value="<%= q || '' %>" />
-    <button>Search</button>
-  </form>
-  <ul>
-    <% writers.forEach(w => { %>
-      <li><a href="/fanfiction/writers/<%= w.id %>"><%= w.name %></a></li>
+    <div class="row">
+    <form method="get">
+      <div class="col-md-6">
+        <input name="q" placeholder="Search writers..." value="<%= q || '' %>" />
+      </div>
+      <div class="col-md-6">
+        <button>Search</button>
+      </div>
+    </form>
+    </div>
+
+    
+
+
+<section class="cards">
+
+<div class="content-wrapper">
+
+  <% writers.forEach(w => { %>
+  
+  <div class="news-card">
+
+    <a href="/fanfiction/writers/<%= w.id %>" class="news-card__card-link"></a>
+    <img src="<%= w.img %>" alt="" class="news-card__image">
+    <div class="news-card__text-wrapper">
+      <h2 class="news-card__title"><%= w.name %></h2>
+      <div class="news-card__post-date">Updated: Feb 20, 2026</div>
+      <div class="news-card__details-wrapper">
+        <p class="news-card__excerpt"><%= w.bio %></p>
+        <a href="/fanfiction/writers/<%= w.id %>" class="news-card__read-more">View Writer <i class="fas fa-long-arrow-alt-right"></i></a>
+      </div>
+    </div>
+
+  </div>
     <% }) %>
-  </ul>
+
   <%- include('../partials/pagination', { total, page, limit, q }) %>
+
+</div>
+  </section>
+
+
+  </div>
 </section>
+  
