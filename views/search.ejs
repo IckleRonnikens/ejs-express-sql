@@ -1,33 +1,61 @@
 <section>
-  <h1>Search</h1>
+  <h1>Site-wide Search</h1>
 
-  <form>
-    <input name="q" value="<%= q %>" placeholder="Search site-wide..."/>
-    <button>Search</button>
+  <form method="get" class="filters">
+    <input name="q" value="<%= q %>" placeholder="Search site-wide..." />
+
+    <select name="type">
+      <option value="">All types</option>
+      <option value="blog"   <%= (filters.type==='blog'?'selected':'') %>>Blog</option>
+      <option value="story"  <%= (filters.type==='story'?'selected':'') %>>Stories</option>
+      <option value="quote"  <%= (filters.type==='quote'?'selected':'') %>>Quotes</option>
+      <option value="art"    <%= (filters.type==='art'?'selected':'') %>>Art</option>
+      <option value="project"<%= (filters.type==='project'?'selected':'') %>>Projects</option>
+    </select>
+
+    <input name="tag" value="<%= filters.tag || '' %>" placeholder="Tag (exact)"/>
+    <input name="book" value="<%= filters.book || '' %>" placeholder="Book code (ps, cos, ...)" />
+
+    <label>
+      From <input type="date" name="from" value="<%= filters.from || '' %>" />
+    </label>
+    <label>
+      To <input type="date" name="to" value="<%= filters.to || '' %>" />
+    </label>
+
+    <label>
+      <input type="checkbox" name="nsfw" value="1" <%= (filters.nsfw==='1'||filters.nsfw==='true')?'checked':'' %> />
+      Show NSFW (Art)
+    </label>
+
+    <button>Filter</button>
   </form>
 
   <p><%= total %> results</p>
-
   <ul class="search-results">
     <% results.forEach(r => { %>
-      <li>
+      <li class="result">
         <strong>[<%= r.type %>]</strong>
-        <% if (r.type === 'blog') { %>
-          <!-- Link to blog list filtered by title (could also link directly to a slug if stored in site_index) -->
-          <a href="/blog?q=<%= encodeURIComponent(r.title) %>"><%= r.title %></a>
+        <% if (r.type === 'blog' && r.slug) { %>
+          <a href="/blog/<%= r.slug %>"><%= r.title %></a>
         <% } else if (r.type === 'story') { %>
-          <a href="/fanfiction/stories?q=<%= encodeURIComponent(r.title) %>"><%= r.title %></a>
+          <span><%= r.title %></span>
         <% } else if (r.type === 'quote') { %>
           <span><%= r.title %></span>
-        <% } else { %>
+        <% } else if (r.type === 'art') { %>
+          <span><%= r.title %> <%= r.nsfw ? '(NSFW)' : '' %></span>
+        <% } else if (r.type === 'project') { %>
           <span><%= r.title %></span>
         <% } %>
-
-        <div class="excerpt"><%- r.body %></div>
-        <small><%= r.tags || '' %></small>
+        <div class="excerpt"><%= r.snippet %></div>
+        <small>
+          <% if (r.tags) { %>Tags: <%= r.tags %><% } %>
+          <% if (r.book) { %> Book: <%= r.book %><% } %>
+          <% if (r.published_at) { %> · <%= r.published_at %><% } %>
+        </small>
       </li>
     <% }) %>
   </ul>
 
-  <%- include('partials/pagination', { total, page, limit, q }) %>
+  <%- include('partials/pagination', { total, page, limit, q, type: filters.type, tag: filters.tag, book: filters.book, nsfw: filters.nsfw, from: filters.from, to: filters.to }) %>
 </section>

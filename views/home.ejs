@@ -86,40 +86,40 @@
 <div class="content-wrapper">
   
   <div class="news-card">
-    <a href="#" class="news-card__card-link"></a>
+    <a href="/fanart" class="news-card__card-link"></a>
     <img src="/public/images/backgrounds/home-page/art.jpg" alt="" class="news-card__image">
     <div class="news-card__text-wrapper">
       <h2 class="news-card__title">Fanart</h2>
       <div class="news-card__post-date">Updated: Feb 14, 2026</div>
       <div class="news-card__details-wrapper">
         <p class="news-card__excerpt">The best fanart from the Harry and Hermione community...</p>
-        <a href="#" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
+        <a href="/fanart" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
     </div>
   </div>
 
   <div class="news-card">
-    <a href="#" class="news-card__card-link"></a>
+    <a href="/fanfiction" class="news-card__card-link"></a>
     <img src="/public/images/backgrounds/home-page/stories.jpg" alt="" class="news-card__image">
     <div class="news-card__text-wrapper">
       <h2 class="news-card__title">Fanfiction</h2>
       <div class="news-card__post-date">Updated: Feb 14, 2026</div>
       <div class="news-card__details-wrapper">
         <p class="news-card__excerpt">The best writers, and the most comprehensive list of stories available...</p>
-        <a href="#" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
+        <a href="/fanfiction" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
     </div>
   </div>
 
   <div class="news-card">
-    <a href="#" class="news-card__card-link"></a>
+    <a href="/projects" class="news-card__card-link"></a>
     <img src="/public/images/backgrounds/home-page/projects.jpg" alt="" class="news-card__image">
     <div class="news-card__text-wrapper">
       <h2 class="news-card__title">Projects</h2>
       <div class="news-card__post-date">Updated: Feb 14, 2026</div>
       <div class="news-card__details-wrapper">
         <p class="news-card__excerpt">All the major projects undertaken within the Harry and Hermione community..</p>
-        <a href="#" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
+        <a href="/projects" class="news-card__read-more">Read more <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
     </div>
   </div>
@@ -162,12 +162,11 @@
 
 
 
-
+<!-- START HOME-FOOTER SECTION -->
 <section>
-  <h1>Welcome</h1>
-  <p>Latest from around the site.</p>
-
-  <h2>Recent Blog Posts</h2>
+<div class="row">
+  <div class="col-md-4">
+      <h2>Recent Blog Posts</h2>
   <ul>
     <% posts.forEach(p => { %>
       <li>
@@ -176,8 +175,9 @@
       </li>
     <% }) %>
   </ul>
-
-  <h2>Recent Artworks</h2>
+  </div>
+  <div class="col-md-4">
+      <h2>Recent Artworks</h2>
   <div class="grid">
     <% arts.forEach(a => { %>
       <figure>
@@ -186,11 +186,16 @@
       </figure>
     <% }) %>
   </div>
-
-  <h2>Recent Stories</h2>
+  </div>
+  <div class="col-md-4">
+     <h2>Recent Stories</h2>
   <ul>
     <% stories.forEach(s => { %>
       <li><strong><%= s.title %></strong> — <em><%= s.writer_name %></em> <small><%= s.published_at %></small></li>
     <% }) %>
   </ul>
+  </div>
+</div>
+
 </section>
+<!-- END HOME-FOOTER SECTION -->

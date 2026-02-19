@@ -1,0 +1,10 @@
+/* 404 PAGE  */
+.error {
+  background: url(../images/backgrounds/404.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+  height: 100vh;
+  color: #fff;
+  overflow: hidden;
+}
