@@ -1,15 +1,56 @@
 
-<header class="site-header">
-  <nav>
-    <a href="/" class="nav-link<%= path==='/' ? ' active' : '' %>">Home</a>
-    <a href="/about" class="nav-link<%= path.startsWith('/about') ? ' active' : '' %>">About</a>
-    <a href="/blog" class="nav-link<%= path.startsWith('/blog') ? ' active' : '' %>">Blog</a>
-    <a href="/fanart" class="nav-link<%= path.startsWith('/fanart') ? ' active' : '' %>">Fanart</a>
-    <a href="/fanfiction" class="nav-link<%= path.startsWith('/fanfiction') ? ' active' : '' %>">Fanfiction</a>
-    <a href="/quotes" class="nav-link<%= path.startsWith('/quotes') ? ' active' : '' %>">Quotes</a>
-    <a href="/projects" class="nav-link<%= path.startsWith('/projects') ? ' active' : '' %>">Projects</a>
-    <a href="/feedback" class="nav-link<%= path.startsWith('/feedback') ? ' active' : '' %>">Feedback</a>
-    <a href="/credits" class="nav-link<%= path.startsWith('/credits') ? ' active' : '' %>">Credits</a>
-    <a href="/search" class="nav-link<%= path.startsWith('/search') ? ' active' : '' %>">Search</a>
+<header>
+  <nav class="navbar navbar-expand-lg " aria-label="Eleventh navbar example">
+    <div class="container">
+      <a class="navbar-brand" href="/"><img src="/public/images/backgrounds/logo/logo.png" /></a>
+      <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span> </button>
+      
+      <div class="collapse navbar-collapse" id="navbarsExample09">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"> <a class="nav-link<%= path==='/' ? ' active' : '' %>" aria-current="page" href="/">Harry and Hermione</a> </li>
+          <li class="nav-item"> <a class="nav-link<%= path.startsWith('/about') ? ' active' : '' %>" href="/about">About</a> </li>
+          <li class="nav-item"> <a class="nav-link<%= path.startsWith('/blog') ? ' active' : '' %>" href="/blog">Blog</a> </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link<%= path.startsWith('/fanart') ? ' active' : '' %>" href="/fanart" data-bs-toggle="dropdown" aria-expanded="false">Fanart</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item bg-transparent text-dark" href="/artists">Artists</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/sfw">SFW</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/nsfw">NSFW</a></li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link<%= path.startsWith('/fanfiction') ? ' active' : '' %>" href="/fanfiction" data-bs-toggle="dropdown" aria-expanded="false">Fanfiction</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item bg-transparent text-dark" href="/writers">Writers</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/sfw">SFW</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/nsfw">NSFW</a></li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link<%= path.startsWith('/quotes') ? ' active' : '' %>" href="/quotes" data-bs-toggle="dropdown" aria-expanded="false">Quotes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item bg-transparent text-dark" href="/writers">Philosopher's Stone</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/sfw">Chamber of Secrets</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/nsfw">Prisoner of Azkaban</a></li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link<%= path.startsWith('/projects') ? ' active' : '' %>" href="/projects" data-bs-toggle="dropdown" aria-expanded="false">Projects</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item bg-transparent text-dark" href="/artbook">Artbook</a></li>
+                <li><a class="dropdown-item bg-transparent text-dark" href="/magazine">Magazine</a></li>
+              </ul>
+          </li>
+          <li class="nav-item"> <a class="nav-link<%= path.startsWith('/feedback') ? ' active' : '' %>" href="/feedback">Feedback</a> </li>
+          <li class="nav-item"> <a class="nav-link<%= path.startsWith('/credits') ? ' active' : '' %>" href="/credits">Credits</a> </li>
+          <li class="nav-item"> <a class="nav-link<%= path.startsWith('/search') ? ' active' : '' %>" href="/search">Search</a> </li>
+        </ul>
+        
+      </div>
+    </div>
   </nav>
 </header>
+<main>
+
+  
+
