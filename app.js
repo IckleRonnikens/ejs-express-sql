@@ -45,7 +45,8 @@ app.use('/quotes', require('./routes/quotes'));
 app.use('/projects', require('./routes/projects'));
 app.use('/feedback', require('./routes/feedback'));
 app.use('/credits', require('./routes/credits'));
-app.use('/search', require('./routes/search'));
+app.use('/live-search', require('./routes/live-search'));
+app.use('/api', require('./routes/api.live-search'));
 
 app.use((err, req, res, next) => {
   console.error(err);

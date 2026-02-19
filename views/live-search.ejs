@@ -1,0 +1,14 @@
+<%- include('partials/head', { title }) %>
+<section class="container">
+  <h1>Live Search</h1>
+
+  <div class="live-search">
+    <input id="liveSearchInput" type="search" placeholder="Type to search across the site…" autocomplete="off" />
+    <div id="liveSearchDropdown" class="live-dropdown hidden" role="listbox" aria-label="Live suggestions"></div>
+  </div>
+
+  <p class="hint">Try a few letters; use ↑/↓ to navigate, Enter to open, ESC to close.</p>
+</section>
+
+<link rel="stylesheet" href="/public/css/live-search.css" />
+<script src="/public/js/live-search.js"></script>

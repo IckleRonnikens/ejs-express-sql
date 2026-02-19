@@ -1,15 +1,15 @@
-
-<section>
+<section class="feedback">
+  <div class="container">
   <h1>Feedback</h1>
   <form method="post" action="/feedback">
-    <label>Name (optional) <input name="author" maxlength="100"/></label>
+    <label>Name (optional) <input class="form-control" name="author" maxlength="100"/></label>
     <label>Type 
-      <select name="type">
+      <select class="form-control" name="type">
         <option value="comment">Comment</option>
         <option value="suggestion">Suggestion</option>
       </select>
     </label>
-    <label>Message <textarea name="message" required maxlength="2000"></textarea></label>
+    <label>Message <textarea class="form-control" name="message" required maxlength="2000"></textarea></label>
     <button type="submit">Submit</button>
   </form>
 
@@ -19,4 +19,6 @@
       <li><strong>[<%= e.type %>]</strong> <%= e.message %> — <em><%= e.author || 'Anonymous' %></em> <small><%= e.created_at %></small></li>
     <% }) %>
   </ul>
+</div>
 </section>
+
