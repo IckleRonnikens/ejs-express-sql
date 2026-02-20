@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const pool = require('../db'); 
 const paginate = require('../middleware/pagination');
 const { commentRules } = require('../middleware/validation');
 const { validationResult } = require('express-validator');
@@ -46,4 +47,6 @@ router.post('/:id/comments', commentRules, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+
 module.exports = router;
+

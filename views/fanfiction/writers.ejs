@@ -1,6 +1,20 @@
+<section class="post">
+  <div class="container">
+    <article class="post">
+
+            <div class="post-heroWrapper">
+                <img class="post-hero" src="/public/images/backgrounds/fanfiction-page/writers.jpg">
+            </div>
+
+            <h1 class="post-title">Writers</h1>
+
+
+        </article>
+  </div>
+</section>
+
 <section class="writers mt-5 text-white pb-5">
   <div class="container">
-  <h1>Writers</h1><hr />
 
     <div class="row">
     <form method="get">
@@ -12,38 +26,36 @@
       </div>
     </form>
     </div>
-
+</div>
+</section>
     
 
 
-<section class="cards">
 
-<div class="content-wrapper">
+<section class="writer-list">
+  <div class="container">
+    <div class="row">
+      <% writers.forEach(w => { %>
 
-  <% writers.forEach(w => { %>
-  
-  <div class="news-card">
-
-    <a href="/fanfiction/writers/<%= w.id %>" class="news-card__card-link"></a>
-    <img src="<%= w.img %>" alt="" class="news-card__image">
-    <div class="news-card__text-wrapper">
-      <h2 class="news-card__title"><%= w.name %></h2>
-      <div class="news-card__post-date">Updated: Feb 20, 2026</div>
-      <div class="news-card__details-wrapper">
-        <p class="news-card__excerpt"><%= w.bio %></p>
-        <a href="/fanfiction/writers/<%= w.id %>" class="news-card__read-more">View Writer <i class="fas fa-long-arrow-alt-right"></i></a>
+      <div class="col-md-6">
+    <img src="<%= w.img %>" alt="" >
       </div>
+      <div class="col-md-6">
+          <h2><a href="/fanfiction/writers/<%= w.id %>"><%= w.name %></a></h2><hr />
+          <p>
+            Updated: Feb 20, 2026
+          </p>
+        <p class="text-white"><%= w.bio %></p>
+        <a href="/fanfiction/writers/<%= w.id %>" class="btn btn-primary rounded-0">View Writer <i class="fas fa-long-arrow-alt-right"></i></a>
+      </div>
+      <% }) %>
     </div>
-
-  </div>
-    <% }) %>
-
   <%- include('../partials/pagination', { total, page, limit, q }) %>
-
-</div>
-  </section>
-
 
   </div>
 </section>
+  
+
+
+
   
