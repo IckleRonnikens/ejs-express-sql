@@ -14,7 +14,7 @@
   <div class="row">
 
        <div class="col-md-6 py-5">
-        <h2 class="display-5 link-body-emphasis mb-1"><a href="/blog/<%= p.slug %>"><%= p.title %></a></h2>
+        <h1 class="display-5 link-body-emphasis mb-1 post-title"><a href="/blog/<%= p.slug %>"><%= p.title %></a></h1>
           <p class="blog-post-meta"><%= p.published_at %> || <%= (p.tags || '') %> </p>
           <p><%= p.summary %>...</p>
           <a class="btn btn-primary rounded-0" href="/blog/<%= p.slug %>">Red More</a>

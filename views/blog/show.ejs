@@ -1,3 +1,21 @@
+<section class="blog-post">
+  <div class="container">
+    <article class="post">
+
+            <div class="post-heroWrapper">
+                <img class="post-hero" src="/public/images/blog/<%= post.image %>.jpg">
+            </div>
+
+            <h1 class="post-title"><%= post.title %></h1>
+
+            <div class="layout-pagePad">
+                <p><em><%- post.date %></em></p>
+                  <div class="body"><%- post.body %></div>
+            
+            </div>
+        </article>
+  </div>
+</section>
 
 <article>
   <h1><%= post.title %></h1>
