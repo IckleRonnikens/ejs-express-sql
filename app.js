@@ -39,7 +39,6 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/home'));
 app.use('/about', require('./routes/about'));
 app.use('/blog', require('./routes/blog'));
-app.use('/fanart', require('./routes/fanart'));
 app.use('/fanfiction', require('./routes/fanfiction'));
 app.use('/projects', require('./routes/projects'));
 app.use('/feedback', require('./routes/feedback'));
