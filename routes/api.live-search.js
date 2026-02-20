@@ -187,93 +187,172 @@ const unionSql = `
     const finalParams = typeFilter ? [...params, typeFilter, limit] : [...params, limit];
     const [rows] = await db.query(unionSql, finalParams);
 
-    // If nothing and q is non-empty, do a LIKE fallback so users see something
-    let results = rows;
-    if (!results.length && q) {
-      const like = `%${q}%`;
-      const likeSubs = [];
-      const likeParams = [];
+// If nothing and q is non-empty, do a LIKE fallback so users see something
+let results = rows;
+if (!results.length && q) {
+  const like = `%${q}%`;
+  const likeSubs = [];
+  const likeParams = [];
 
-      likeSubs.push(`
-        SELECT bp.id, 'blog' AS type, bp.slug, bp.title, LEFT(bp.body,160) AS snippet, bp.published_at, 0 AS score
-        FROM blog_posts bp
-        WHERE bp.status='published' AND (bp.title LIKE ? OR bp.body LIKE ? OR IFNULL(bp.tags,'') LIKE ?)
-        LIMIT ${limit}
-      `); likeParams.push(like, like, like);
+  // BLOG
+  likeSubs.push(`
+    SELECT
+      bp.id AS id,
+      'blog' AS type,
+      bp.slug AS slug,
+      bp.title AS title,
+      LEFT(bp.body, 160) AS snippet,
+      bp.published_at AS published_at,
+      0 AS score
+    FROM blog_posts bp
+    WHERE bp.status='published'
+      AND (bp.title LIKE ? OR bp.body LIKE ? OR IFNULL(bp.tags,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like, like);
 
-      likeSubs.push(`
-        SELECT s.id, 'story', NULL, s.title,
-               LEFT(CONCAT(IFNULL(s.summary,''),' ',IFNULL(s.content,'')),160), s.published_at, 0
-        FROM stories s
-        WHERE s.status='published' AND (s.title LIKE ? OR s.summary LIKE ? OR s.content LIKE ? OR IFNULL(s.tags,'') LIKE ?)
-        LIMIT ${limit}
-      `); likeParams.push(like, like, like, like);
+  // STORIES
+  likeSubs.push(`
+    SELECT
+      s.id AS id,
+      'story' AS type,
+      NULL AS slug,
+      s.title AS title,
+      LEFT(CONCAT(COALESCE(s.summary,''), ' ', COALESCE(s.content,'')), 160) AS snippet,
+      s.published_at AS published_at,
+      0 AS score
+    FROM stories s
+    WHERE s.status='published'
+      AND (s.title LIKE ? OR s.summary LIKE ? OR s.content LIKE ? OR IFNULL(s.tags,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like, like, like);
 
+  // QUOTES
+  {
+    const quoteWhere = [
+      '(q.quote_text LIKE ? OR q.book LIKE ?)'
+    ];
+    likeParams.push(like, like);
 
-
-likeSubs.push(`
-  SELECT q.id, 'quote', NULL,
-         CONCAT(q.book, IFNULL(CONCAT(' (', q.year, ')'), '')),
-         LEFT(q.quote_text, 160), q.created_at, 0
-  FROM quotes q
-  WHERE (q.quote_text LIKE ? OR q.book LIKE ?)
-    ${req.query.book ? 'AND q.book = ?' : ''}
-    ${req.query.year ? 'AND q.year = ?' : ''}
-  LIMIT ${limit}
-`);
-likeParams.push(like, like);
-if (req.query.book) likeParams.push(String(req.query.book));
-if (req.query.year) likeParams.push(parseInt(req.query.year, 10));
-
-
-
-      likeSubs.push(`
-        SELECT ar.id, 'artist', NULL, ar.name,
-              LEFT(IFNULL(ar.bio,''),160),
-              NULL, 0
-        FROM artists ar
-        WHERE (ar.name LIKE ? OR IFNULL(ar.bio,'') LIKE ?)
-        LIMIT ${limit}
-      `);
-      likeParams.push(like, like);
-
-      likeSubs.push(`
-        SELECT a.id, 'art', NULL, a.title, LEFT(IFNULL(a.description,''),160), a.created_at, 0
-        FROM artworks a
-        WHERE (a.title LIKE ? OR IFNULL(a.description,'') LIKE ? OR IFNULL(a.tags,'') LIKE ?)
-          ${showNsfw ? '' : 'AND a.nsfw=0'}
-        LIMIT ${limit}
-      `); likeParams.push(like, like, like);
-
-      likeSubs.push(`
-        SELECT p.id, 'project', NULL, p.title, LEFT(IFNULL(p.description,''),160), p.created_at, 0
-        FROM projects p
-        WHERE (p.title LIKE ? OR IFNULL(p.description,'') LIKE ?)
-        LIMIT ${limit}
-      `); likeParams.push(like, like);
-
-      likeSubs.push(`
-        SELECT w.id, 'writer', NULL, w.name,
-              LEFT(IFNULL(w.bio,''),160),
-              NULL, 0
-        FROM writers w
-        WHERE (w.name LIKE ? OR IFNULL(w.bio,'') LIKE ?)
-        LIMIT ${limit}
-      `);
-      likeParams.push(like, like);
-
-      const fbSql = `
-        SELECT * FROM (
-          ${likeSubs.join('\nUNION ALL\n')}
-        ) AS fb
-        ${typeFilter ? 'WHERE fb.type = ?' : ''}
-        ORDER BY fb.published_at DESC
-        LIMIT ?
-      `;
-      const fbParams = typeFilter ? [...likeParams, typeFilter, limit] : [...likeParams, limit];
-      const [fbRows] = await db.query(fbSql, fbParams);
-      results = fbRows;
+    if (req.query.book) {
+      quoteWhere.push('q.book = ?');
+      likeParams.push(String(req.query.book));
     }
+    if (req.query.year) {
+      quoteWhere.push('q.year = ?');
+      likeParams.push(parseInt(req.query.year, 10));
+    }
+
+    likeSubs.push(`
+      SELECT
+        q.id AS id,
+        'quote' AS type,
+        NULL AS slug,
+        CONCAT(q.book, IFNULL(CONCAT(' (', q.year, ')'), '')) AS title,
+        LEFT(q.quote_text, 160) AS snippet,
+        q.created_at AS published_at,
+        0 AS score
+      FROM quotes q
+      WHERE ${quoteWhere.join(' AND ')}
+      LIMIT ${limit}
+    `);
+  }
+
+  // ARTISTS
+  likeSubs.push(`
+    SELECT
+      ar.id AS id,
+      'artist' AS type,
+      NULL AS slug,
+      ar.name AS title,
+      LEFT(IFNULL(ar.bio,''), 160) AS snippet,
+      NULL AS published_at,
+      0 AS score
+    FROM artists ar
+    WHERE (ar.name LIKE ? OR IFNULL(ar.bio,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like);
+
+  // ARTWORKS
+  likeSubs.push(`
+    SELECT
+      a.id AS id,
+      'art' AS type,
+      NULL AS slug,
+      a.title AS title,
+      LEFT(IFNULL(a.description,''), 160) AS snippet,
+      a.created_at AS published_at,
+      0 AS score
+    FROM artworks a
+    WHERE (a.title LIKE ? OR IFNULL(a.description,'') LIKE ? OR IFNULL(a.tags,'') LIKE ?)
+      ${showNsfw ? '' : 'AND a.nsfw=0'}
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like, like);
+
+  // PROJECTS
+  likeSubs.push(`
+    SELECT
+      p.id AS id,
+      'project' AS type,
+      NULL AS slug,
+      p.title AS title,
+      LEFT(IFNULL(p.description,''), 160) AS snippet,
+      p.created_at AS published_at,
+      0 AS score
+    FROM projects p
+    WHERE (p.title LIKE ? OR IFNULL(p.description,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like);
+
+  // WRITERS
+  likeSubs.push(`
+    SELECT
+      w.id AS id,
+      'writer' AS type,
+      NULL AS slug,
+      w.name AS title,
+      LEFT(IFNULL(w.bio,''), 160) AS snippet,
+      NULL AS published_at,
+      0 AS score
+    FROM writers w
+    WHERE (w.name LIKE ? OR IFNULL(w.bio,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like);
+
+  // Join with parentheses per branch to be extra safe
+  const fbSql = `
+    SELECT
+      fb.id,
+      fb.type,
+      fb.slug,
+      fb.title,
+      fb.snippet,
+      fb.published_at,
+      fb.score
+    FROM (
+      ${likeSubs.map(s => `(${s})`).join('\nUNION ALL\n')}
+    ) AS fb
+    ${typeFilter ? 'WHERE fb.type = ?' : ''}
+    ORDER BY fb.published_at DESC
+    LIMIT ?
+  `;
+
+  const fbParams = typeFilter
+    ? [...likeParams, typeFilter, limit]
+    : [...likeParams, limit];
+
+  // Helpful during debugging
+  // console.debug('fbSql:\n', fbSql);
+  // console.debug('fbParams:', fbParams);
+
+  const [fbRows] = await db.query(fbSql, fbParams);
+  results = fbRows;
+}
 
     res.json({ q, results });
 

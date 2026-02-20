@@ -12,13 +12,12 @@
   base.set('limit', limit);
   const makeUrl = (p) => { const s = new URLSearchParams(base.toString()); s.set('page', p); return `?${s.toString()}`; };
 %>
-<nav aria-label="Page navigation example" class="pagination">
+<nav aria-label="Page navigation example" class="pagination ">
   <% if (cur > 1) { %>
-    <a href="<%= makeUrl(cur - 1) %>">Prev</a>
+    <span class="navbar-brand"><a href="<%= makeUrl(cur - 1) %>">Prev</a></span>
   <% } %>
-  <span>Page <%= cur %> / <%= totalPages %></span>
+    <span class="justify-content-lg-center">Page <%= cur %> / <%= totalPages %></span>
   <% if (cur < totalPages) { %>
-    <a href="<%= makeUrl(cur + 1) %>">Next</a>
+    <span class="justify-content-lg-end"><a href="<%= makeUrl(cur + 1) %>">Next</a></span>
   <% } %>
 </nav>
-

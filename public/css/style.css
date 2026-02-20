@@ -106,7 +106,7 @@ nav ul li a:hover {color: #fff!important;}
 .navbar-toggler-icon { color: #515352!important; }
 
 
-/* HERO SECTION */
+/* HERO HOME SECTION */
 
 .hero {
     height: 100vh;
@@ -120,7 +120,9 @@ nav ul li a:hover {color: #fff!important;}
 .hero p {color: #fff;}
 .video {width: 100%;}
 
-.about {
+/* ABOUT HOME SECTION */
+
+.about-home {
     height: 100vh;
     width: auto;
     padding: 20px;
@@ -128,6 +130,15 @@ nav ul li a:hover {color: #fff!important;}
     align-items:center;
     }
 
+.blog-home {
+    height: 100vh;
+    width: auto;
+    padding: 20px;
+    display:flex;
+    align-items:center;
+    }
+
+.blog-post a:link,a:visited {color: #fff; text-decoration: none;}
 .blog-post ul li {list-style-type: none;}
 .blog-post p {
     font-family: "Inter", sans-serif;
