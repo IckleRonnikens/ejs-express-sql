@@ -1,15 +1,15 @@
-<section class="blog-post">
+<section class="post">
   <div class="container">
     <article class="post">
 
             <div class="post-heroWrapper">
-                <img class="post-hero" src="/public/images/blog/<%= post.image %>.jpg">
+                <img class="post-hero" src="<%= post.image %>">
             </div>
 
             <h1 class="post-title"><%= post.title %></h1>
 
             <div class="layout-pagePad">
-                <p><em><%- post.date %></em></p>
+                <p><em><%- post.published_at %></em></p>
                   <div class="body"><%- post.body %></div>
             
             </div>
@@ -17,23 +17,31 @@
   </div>
 </section>
 
-<article>
-  <h1><%= post.title %></h1>
-  <div class="body"><%- post.body %></div>
-  <p><small>Tags: <%= post.tags || '—' %></small></p>
-</article>
 
-<section>
+
+<section class="comments">
+  <div class="container">
   <h2>Comments</h2>
-  <ul>
+  
+  <form method="post" action="/blog/<%= post.id %>/comments">
+  <div class="row">
+    <div class="col-md-4">
+    <label>Name <input name="author" required maxlength="100"/></label>
+    </div>
+    <div class="col-md-4">
+      <label>Comment <textarea name="body" required maxlength="2000"></textarea></label>
+    </div>
+    <div class="col-md-4">
+      <button type="submit">Post</button>
+    </div>
+  </div>
+  </form>
+
+    <ul>
     <% comments.forEach(c => { %>
       <li><strong><%= c.author %></strong> <small><%= c.created_at %></small><br/><div><%= c.body %></div></li>
     <% }) %>
   </ul>
 
-  <form method="post" action="/blog/<%= post.id %>/comments">
-    <label>Name <input name="author" required maxlength="100"/></label>
-    <label>Comment <textarea name="body" required maxlength="2000"></textarea></label>
-    <button type="submit">Post</button>
-  </form>
+  </div>
 </section>
