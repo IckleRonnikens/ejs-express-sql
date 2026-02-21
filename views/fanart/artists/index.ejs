@@ -1,4 +1,6 @@
 <section class="artists mt-5 text-white pb-5" >
+
+  
   <div class="container">
   <h1>Artists</h1><hr />
 
@@ -8,6 +10,7 @@
     <button type="submit">Filter</button>
   </form><hr />
 
+  <%- include('../../partials/pagination', { total, page, limit, q, tag }) %>
 
   <div class="row">
     <% posts.forEach(a => { %>
