@@ -40,11 +40,31 @@
 
 body {
     background-color: #1e1e1e;
+    color: #515352;
     font-family: "Oswald", sans-serif;
     font-size: 120%;
     padding-top: 0px;
     margin-top: 0px;
 }
+
+.body-text{
+    font-size:18px;
+    font-weight: 400;
+    text-align: justify;
+    vertical-align: baseline;
+    background: 0 0; 
+    margin-top: 10px;
+    letter-spacing: .4px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: #515352;
+    -webkit-font-smoothing: antialiased;
+}
+.body-text:last-of-type{margin-top:0}
+
+.body-text{margin-top:10px;letter-spacing:.4px}
+
 
 .container {
     width: 1000px!important;
@@ -143,6 +163,7 @@ nav ul li a:hover {color: #fff!important;}
 .blog-post p {
     font-family: "Inter", sans-serif;
     font-size: 15px;
+    color: #fff;
     font-weight: 300;
     padding-top: 15px;
 
