@@ -1,0 +1,26 @@
+<%= baseUrl %>
+  <input type="search" name="q" value="<%= q || '' %>" placeholder="Search titles & descriptions…" />
+  <div class="tags">
+    <% allTags.forEach(t => { 
+         const selected = (tags || []).includes(t.slug);
+    %>
+      <label class="tag">
+        <input type="checkbox" name="tag" value="<%= t.slug %>" <%= selected ? 'checked' : '' %> />
+        <span><%= t.name %> (<%= t.usage_count %>)</span>
+      </label>
+    <% }) %>
+  </div>
+  <input type="hidden" name="tags" value="<%= (tags || []).join(',') %>" />
+  <button type="submit">Filter</button>
+</form>
+
+<script>
+  // Keep `tags` as a comma-separated hidden field when checkboxes change
+  const form = document.currentScript.closest('form');
+  function syncTags() {
+    const selected = [...form.querySelectorAll('input[name="tag"]:checked')].map(i => i.value);
+    form.querySelector('input[name="tags"]').value = selected.join(',');
+  }
+  form.addEventListener('change', syncTags);
+  syncTags();
+</script>

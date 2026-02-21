@@ -1,0 +1,12 @@
+<ul class="gallery-grid">
+  <% images.forEach(img => { %>
+    <li class="thumb <%= img.is_nsfw ? 'is-nsfw' : '' %>">
+      <figure>
+        <img src="<%= img.file_path %>" alt="<%= img.title || 'Artwork' %>">
+        <% if (img.title) { %>
+          <figcaption><%= img.title %></figcaption>
+        <% } %>
+      </figure>
+    </li>
+  <% }) %>
+</ul>

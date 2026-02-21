@@ -1,0 +1,29 @@
+<section class="artists mt-5 text-white pb-5" >
+  <div class="container">
+  <h1>Artists</h1><hr />
+
+  <form method="get" class="filters">
+    <input type="text" name="q" placeholder="Search artists..." value="<%= q || '' %>"/>
+    <input type="text" name="tag" placeholder="Tag (e.g., arishatistic)" value="<%= tag || '' %>"/>
+    <button type="submit">Filter</button>
+  </form><hr />
+
+
+  <div class="row">
+    <% posts.forEach(a => { %>
+
+       <div class="col-md-4 py-5">
+        <a href="/fanart/artists/<%= a.slug %>">
+          <img src="<%= a.image %>" class="w-100" />
+        </a>
+       </div>
+    <% }) %>
+
+  </div>
+
+
+
+
+  <%- include('../../partials/pagination', { total, page, limit, q, tag }) %>
+
+</section>

@@ -1,0 +1,27 @@
+/* public/css/fanart.css */
+.gallery-grid {
+  list-style: none; padding: 0; margin: 1rem 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;
+}
+
+.thumb img {
+  width: 100%; height: 220px; object-fit: cover; display: block; border-radius: 8px;
+}
+
+.thumb.is-nsfw img {
+  filter: blur(14px) saturate(0.8);
+  transition: filter 0.2s ease;
+}
+
+.thumb.is-nsfw.revealed img {
+  filter: none;
+}
+
+.filter-bar { margin: 1rem 0; }
+.filter-bar .tags { display: flex; flex-wrap: wrap; gap: 8px; max-height: 120px; overflow: auto; }
+.tag { display: inline-flex; align-items: center; gap: 6px; background: #f2f2f2; padding: 4px 8px; border-radius: 16px; }
+.pagination a { margin: 0 4px; padding: 2px 8px; border-radius: 4px; text-decoration: none; }
+.pagination a.active { background: #333; color: #fff; }
+.artist-header { display: flex; gap: 16px; align-items: center; }
+.artist-header .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+.upload-form { border-top: 1px solid #e6e6e6; margin-top: 2rem; padding-top: 1rem; }

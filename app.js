@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -23,13 +22,16 @@ app.use(session({
 }));
 
 const writeLimiter = rateLimit({ windowMs: 60_000, max: 20 });
-app.use(['/blog/:id/comments', '/feedback', '/fanart/artists/:id/upload'], writeLimiter);
+app.use(['/blog/:id/comments', '/feedback', '/artists/:id/comments'], writeLimiter);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 app.use((req, res, next) => {
   res.locals.path = req.path;
@@ -39,6 +41,7 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/home'));
 app.use('/about', require('./routes/about'));
 app.use('/blog', require('./routes/blog'));
+app.use('/fanart', require('./routes/fanart'));
 app.use('/fanfiction', require('./routes/fanfiction'));
 app.use('/projects', require('./routes/projects'));
 app.use('/feedback', require('./routes/feedback'));

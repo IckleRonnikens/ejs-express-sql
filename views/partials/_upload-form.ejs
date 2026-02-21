@@ -1,0 +1,22 @@
+<%= action %>
+  <div>
+    <label>Image file (JPG/PNG/WebP/GIF, max 8MB)</label>
+    <input type="file" name="image" accept="image/*" required>
+  </div>
+  <div>
+    <label>Title (optional)</label>
+    <input type="text" name="title" maxlength="120">
+  </div>
+  <div>
+    <label>Description (optional)</label>
+    <textarea name="description" rows="3" maxlength="1000"></textarea>
+  </div>
+  <div>
+    <label><input type="checkbox" name="is_nsfw" value="1"> Mark as NSFW</label>
+  </div>
+  <div>
+    <label>Tags (comma-separated)</label>
+    <input type="text" name="tag_input" placeholder="e.g., portrait, sketch">
+  </div>
+  <button type="submit">Upload</button>
+</form>

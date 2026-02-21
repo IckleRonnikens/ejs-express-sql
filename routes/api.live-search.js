@@ -72,41 +72,41 @@ router.get('/live-search', async (req, res, next) => {
     }
 
     // ARTISTS
-    {
-      const fts = boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '1=1';
-      if (boolQ) params.push(boolQ);
-      subqueries.push(`
-        SELECT ar.id, 'artist' AS type, NULL AS slug,
-              ar.name AS title,
-              LEFT(IFNULL(ar.bio,''), 160) AS snippet,
-              NULL AS published_at,
-              ${boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
-        FROM artists ar
-        WHERE ${fts}
-        ORDER BY score DESC, ar.id DESC
-        LIMIT ${limit}
-      `);
-      if (boolQ) params.push(boolQ);
-    }
+    // {
+    //   const fts = boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '1=1';
+    //   if (boolQ) params.push(boolQ);
+    //   subqueries.push(`
+    //     SELECT ar.id, 'artist' AS type, NULL AS slug,
+    //           ar.name AS title,
+    //           LEFT(IFNULL(ar.bio,''), 160) AS snippet,
+    //           NULL AS published_at,
+    //           ${boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
+    //     FROM artists ar
+    //     WHERE ${fts}
+    //     ORDER BY score DESC, ar.id DESC
+    //     LIMIT ${limit}
+    //   `);
+    //   if (boolQ) params.push(boolQ);
+    // }
 
     // ARTWORKS (NSFW gate by default)
-    {
-      const fts = boolQ ? `MATCH(a.title, a.description, a.tags) AGAINST (? IN BOOLEAN MODE)` : '1=1';
-      const nsfwWhere = showNsfw ? '1=1' : 'a.nsfw=0';
-      if (boolQ) params.push(boolQ);
-      subqueries.push(`
-        SELECT a.id, 'art', NULL AS slug,
-               a.title,
-               LEFT(IFNULL(a.description,''), 160) AS snippet,
-               a.created_at AS published_at,
-               ${boolQ ? `MATCH(a.title, a.description, a.tags) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
-        FROM artworks a
-        WHERE ${nsfwWhere} AND ${fts}
-        ORDER BY score DESC, published_at DESC
-        LIMIT ${limit}
-      `);
-      if (boolQ) params.push(boolQ);
-    }
+    // {
+    //   const fts = boolQ ? `MATCH(a.title, a.description, a.tags) AGAINST (? IN BOOLEAN MODE)` : '1=1';
+    //   const nsfwWhere = showNsfw ? '1=1' : 'a.nsfw=0';
+    //   if (boolQ) params.push(boolQ);
+    //   subqueries.push(`
+    //     SELECT a.id, 'art', NULL AS slug,
+    //            a.title,
+    //            LEFT(IFNULL(a.description,''), 160) AS snippet,
+    //            a.created_at AS published_at,
+    //            ${boolQ ? `MATCH(a.title, a.description, a.tags) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
+    //     FROM artworks a
+    //     WHERE ${nsfwWhere} AND ${fts}
+    //     ORDER BY score DESC, published_at DESC
+    //     LIMIT ${limit}
+    //   `);
+    //   if (boolQ) params.push(boolQ);
+    // }
 
 
 // QUOTES (new table schema)
@@ -211,6 +211,23 @@ if (!results.length && q) {
   `);
   likeParams.push(like, like, like);
 
+    // FANART
+  likeSubs.push(`
+    SELECT
+      bp.id AS id,
+      'artists' AS type,
+      bp.slug AS slug,
+      bp.title AS title,
+      LEFT(bp.summary, 160) AS snippet,
+      bp.published_at AS published_at,
+      0 AS score
+    FROM artists bp
+    WHERE bp.status='published'
+      AND (bp.title LIKE ? OR bp.summary LIKE ? OR IFNULL(bp.tags,'') LIKE ?)
+    LIMIT ${limit}
+  `);
+  likeParams.push(like, like, like);
+
   // STORIES
   likeSubs.push(`
     SELECT
@@ -259,38 +276,7 @@ if (!results.length && q) {
     `);
   }
 
-  // ARTISTS
-  likeSubs.push(`
-    SELECT
-      ar.id AS id,
-      'artist' AS type,
-      NULL AS slug,
-      ar.name AS title,
-      LEFT(IFNULL(ar.bio,''), 160) AS snippet,
-      NULL AS published_at,
-      0 AS score
-    FROM artists ar
-    WHERE (ar.name LIKE ? OR IFNULL(ar.bio,'') LIKE ?)
-    LIMIT ${limit}
-  `);
-  likeParams.push(like, like);
 
-  // ARTWORKS
-  likeSubs.push(`
-    SELECT
-      a.id AS id,
-      'art' AS type,
-      NULL AS slug,
-      a.title AS title,
-      LEFT(IFNULL(a.description,''), 160) AS snippet,
-      a.created_at AS published_at,
-      0 AS score
-    FROM artworks a
-    WHERE (a.title LIKE ? OR IFNULL(a.description,'') LIKE ? OR IFNULL(a.tags,'') LIKE ?)
-      ${showNsfw ? '' : 'AND a.nsfw=0'}
-    LIMIT ${limit}
-  `);
-  likeParams.push(like, like, like);
 
   // PROJECTS
   likeSubs.push(`
