@@ -73,14 +73,14 @@ router.get('/live-search', async (req, res, next) => {
 
     // ARTISTS
     // {
-    //   const fts = boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '1=1';
+    //   const fts = boolQ ? `MATCH(ar.title, ar.summary) AGAINST (? IN BOOLEAN MODE)` : '1=1';
     //   if (boolQ) params.push(boolQ);
     //   subqueries.push(`
     //     SELECT ar.id, 'artist' AS type, NULL AS slug,
-    //           ar.name AS title,
-    //           LEFT(IFNULL(ar.bio,''), 160) AS snippet,
+    //           ar.title AS title,
+    //           LEFT(IFNULL(ar.summary,''), 160) AS snippet,
     //           NULL AS published_at,
-    //           ${boolQ ? `MATCH(ar.name, ar.bio) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
+    //           ${boolQ ? `MATCH(ar.title, ar.summary) AGAINST (? IN BOOLEAN MODE)` : '0'} AS score
     //     FROM artists ar
     //     WHERE ${fts}
     //     ORDER BY score DESC, ar.id DESC
@@ -214,16 +214,16 @@ if (!results.length && q) {
     // FANART
   likeSubs.push(`
     SELECT
-      bp.id AS id,
+      ar.id AS id,
       'artists' AS type,
-      bp.slug AS slug,
-      bp.title AS title,
-      LEFT(bp.summary, 160) AS snippet,
-      bp.published_at AS published_at,
+      ar.slug AS slug,
+      ar.title AS title,
+      LEFT(ar.summary, 160) AS snippet,
+      ar.published_at AS published_at,
       0 AS score
-    FROM artists bp
-    WHERE bp.status='published'
-      AND (bp.title LIKE ? OR bp.summary LIKE ? OR IFNULL(bp.tags,'') LIKE ?)
+    FROM artists ar
+    WHERE ar.status='published'
+      AND (ar.title LIKE ? OR ar.summary LIKE ? OR IFNULL(ar.tags,'') LIKE ?)
     LIMIT ${limit}
   `);
   likeParams.push(like, like, like);
